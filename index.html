@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barber Booking</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, Arial;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    .box {
+      max-width: 320px;
+    }
+    button {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #22c55e;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>💈 Barber Booking</h2>
+    <p>Онлайн-запись к барберу скоро будет доступна</p>
+    <button onclick="Telegram.WebApp.close()">Закрыть</button>
+  </div>
+</body>
+</html>
