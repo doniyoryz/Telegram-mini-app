@@ -180,30 +180,7 @@ function confirmBooking(time) {
 
   document.getElementById("app").innerHTML = html;
 }
-
-    /* ========= ЭКРАН 2: БАРБЕРЫ ========= */
    
-      let html = `<h1>💈 Барберы</h1>`;
-
-      BARBERS[branch].forEach(b => {
-        html += `
-          <button class="secondary" onclick="selectBarber('${b.name}', '${b.tg}')">
-            💈 ${b.name} — ${b.exp}<br>
-            ✂️ Стрижка: ${b.cut.toLocaleString()}<br>
-            🧔 Борода: ${b.beard.toLocaleString()}
-          </button>
-        `;
-      });
-
-      html += `
-        <button class="secondary" onclick="showAllBarbers()"
-          ⬅️ Назад к филиалам
-        </button>
-      `;
-
-      document.getElementById("app").innerHTML = html;
-    }
-
     /* ========= КОНТАКТ ========= */
     function contact(username) {
       window.open("https://t.me/" + username, "_blank");
