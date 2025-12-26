@@ -2,39 +2,151 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Barber Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sartarosh</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, Arial;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
       background: #0f172a;
-      color: white;
+      color: #ffffff;
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+    }
+    .app {
+      width: 100%;
+      max-width: 360px;
+      padding: 24px;
       text-align: center;
     }
-    .box {
-      max-width: 320px;
+    h1 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+    p {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-bottom: 20px;
     }
     button {
-      margin-top: 16px;
-      padding: 12px 16px;
-      background: #22c55e;
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 10px;
       border: none;
       border-radius: 10px;
-      font-size: 16px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .primary {
+      background: #22c55e;
+      color: #000;
+    }
+    .secondary {
+      background: #1e293b;
+      color: #fff;
+      border: 1px solid #334155;
+    }
+    .lang {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .lang button {
+      width: auto;
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+    .footer {
+      font-size: 11px;
+      opacity: 0.6;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>💈 Barber Booking</h2>
-    <p>Онлайн-запись к барберу скоро будет доступна</p>
-    <button onclick="Telegram.WebApp.close()">Закрыть</button>
+
+<div class="app" id="app">
+  <div class="lang">
+    <button class="secondary" onclick="setLang('ru')">RU</button>
+    <button class="secondary" onclick="setLang('uz')">UZ</button>
   </div>
+
+  <h1 id="title">💈 Онлайн-запись к барберу</h1>
+  <p id="desc">
+    Запишись на стрижку или бороду за 1 минуту.<br>
+    Без звонков и ожиданий.
+  </p>
+
+  <button class="primary" onclick="showServices()" id="mainBtn">
+    Записаться
+  </button>
+
+  <div class="footer" id="footer">
+    Ваши данные не передаются третьим лицам
+  </div>
+</div>
+
+<script>
+  const tg = Telegram.WebApp;
+  tg.expand();
+
+  const texts = {
+    ru: {
+      title: "💈 Онлайн-запись к барберу",
+      desc: "Запишись на стрижку или бороду за 1 минуту.<br>Без звонков и ожиданий.",
+      mainBtn: "Записаться",
+      footer: "Ваши данные не передаются третьим лицам",
+      services: "Выберите услугу",
+      haircut: "✂️ Стрижка",
+      beard: "🧔 Борода",
+      combo: "🔥 Комплекс",
+      contact: "📲 Написать в Telegram",
+      close: "❌ Закрыть"
+    },
+    uz: {
+      title: "💈 Barberga onlayn yozilish",
+      desc: "Soch yoki soqol olishga 1 daqiqada yoziling.<br>Qo‘ng‘iroqlarsiz va kutishsiz.",
+      mainBtn: "Yozilish",
+      footer: "Ma’lumotlaringiz uchinchi shaxslarga berilmaydi",
+      services: "Xizmatni tanlang",
+      haircut: "✂️ Soch olish",
+      beard: "🧔 Soqol olish",
+      combo: "🔥 Kompleks",
+      contact: "📲 Telegram’da yozish",
+      close: "❌ Yopish"
+    }
+  };
+
+  let lang = "ru";
+
+  function setLang(l) {
+    lang = l;
+    document.getElementById("title").innerHTML = texts[l].title;
+    document.getElementById("desc").innerHTML = texts[l].desc;
+    document.getElementById("mainBtn").innerHTML = texts[l].mainBtn;
+    document.getElementById("footer").innerHTML = texts[l].footer;
+  }
+
+  function showServices() {
+    document.getElementById("app").innerHTML = `
+      <h1>${texts[lang].services}</h1>
+      <button class="secondary">${texts[lang].haircut}</button>
+      <button class="secondary">${texts[lang].beard}</button>
+      <button class="secondary">${texts[lang].combo}</button>
+      <button class="primary" onclick="contact()">${texts[lang].contact}</button>
+      <button class="secondary" onclick="Telegram.WebApp.close()">${texts[lang].close}</button>
+    `;
+  }
+
+  function contact() {
+    window.open("https://t.me/USERNAME_BARBER", "_blank");
+  }
+</script>
+
 </body>
 </html>
+
