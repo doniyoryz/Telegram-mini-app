@@ -57,6 +57,8 @@
         { name: "Ислам", exp: "универсал", cut: 85000, beard: 55000, tg: "isa_abd09" }
       ]
     };
+    let booking = {};
+
 
     /* ========= ЭКРАН 1: ФИЛИАЛЫ ========= */
     function showServices() {
@@ -72,6 +74,102 @@
 
       document.getElementById("app").innerHTML = html;
     }
+  function selectBarber(name, tg) {
+  booking.barber = name;
+  booking.tg = tg;
+
+  let html = `
+    <h1>✂️ Выберите услугу</h1>
+
+    <button class="secondary" onclick="selectService('Стрижка')">
+      ✂️ Стрижка
+    </button>
+
+    <button class="secondary" onclick="selectService('Борода')">
+      🧔 Борода
+    </button>
+
+    <button class="secondary" onclick="selectService('Комплекс')">
+      💈 Комплекс
+    </button>
+
+    <button class="secondary" onclick="showServices()">
+      ⬅️ Назад
+    </button>
+  `;
+
+  document.getElementById("app").innerHTML = html;
+}
+function selectService(service) {
+  booking.service = service;
+
+  let today = new Date();
+  let tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  let html = `
+    <h1>📅 Выберите дату</h1>
+
+    <button class="secondary" onclick="selectDate('${today.toDateString()}')">
+      Сегодня
+    </button>
+
+    <button class="secondary" onclick="selectDate('${tomorrow.toDateString()}')">
+      Завтра
+    </button>
+
+    <button class="secondary" onclick="selectBarber(booking.barber, booking.tg)">
+      ⬅️ Назад
+    </button>
+  `;
+
+  document.getElementById("app").innerHTML = html;
+}
+function selectDate(date) {
+  booking.date = date;
+
+  let times = ["10:00", "11:30", "13:00", "15:00", "17:00"];
+
+  let html = `<h1>⏰ Выберите время</h1>`;
+
+  times.forEach(t => {
+    html += `
+      <button class="secondary" onclick="confirmBooking('${t}')">
+        ⏰ ${t}
+      </button>
+    `;
+  });
+
+  html += `
+    <button class="secondary" onclick="selectService(booking.service)">
+      ⬅️ Назад
+    </button>
+  `;
+
+  document.getElementById("app").innerHTML = html;
+}
+function confirmBooking(time) {
+  booking.time = time;
+
+  let html = `
+    <h1>✅ Подтверждение</h1>
+
+    💈 Барбер: ${booking.barber}<br>
+    ✂️ Услуга: ${booking.service}<br>
+    📅 Дата: ${booking.date}<br>
+    ⏰ Время: ${booking.time}<br><br>
+
+    <button class="secondary" onclick="contact(booking.tg)">
+      📩 Написать барберу
+    </button>
+
+    <button class="secondary" onclick="showServices()">
+      🔁 Новая запись
+    </button>
+  `;
+
+  document.getElementById("app").innerHTML = html;
+}
 
     /* ========= ЭКРАН 2: БАРБЕРЫ ========= */
     function showBarbers(branch) {
