@@ -133,18 +133,18 @@
 
   function showServices() {
   document.getElementById("app").innerHTML = `
-    <h1>Выберите барбера</h1>
+    <h1>📍 Выберите филиал</h1>
 
-    <button class="secondary" onclick="contact('d_zafarogli')">
-      💈 Дониёр — 5 лет опыта
+    <button class="secondary" onclick="showBarbers('center')">
+      🏙 Темур Малик 27А
     </button>
 
-    <button class="secondary" onclick="contact('ryoithab')">
-      💈 Бахтиёр — fade, борода
+    <button class="secondary" onclick="showBarbers('yunusabad')">
+      🌆 Феруза 2, 7-дом
     </button>
 
-    <button class="secondary" onclick="contact('CJskadi')">
-      💈 Махмуд — классика
+    <button class="secondary" onclick="showBarbers('chilonzor')">
+      🏘 Абай
     </button>
 
     <button class="secondary" onclick="goBack()">
@@ -152,11 +152,56 @@
     </button>
   `;
 }
+function showBarbers(branch) {
+  let content = `<h1>💈 Барберы</h1>`;
+
+  if (branch === 'Феруза 2, 7-дом') {
+    content += `
+      <button class="secondary" onclick="contact('d_zafarogli')">
+        💈 Дониёр — 5 лет опыта<br>✂️ Стрижка: 120 000<br>🧔 Борода: 80 000
+      </button>
+
+      <button class="secondary" onclick="contact('ryoithab')">
+        💈 Бек — fade, борода<br>✂️ Стрижка: 100 000<br>🧔 Борода: 70 000
+      </button>
+    `;
+  }
+
+  if (branch === 'Абай') {
+    content += `
+      <button class="secondary" onclick="contact('CJskadi')">
+        💈 Махмуд — классика<br>✂️ Стрижка: 90 000<br>🧔 Борода: 60 000
+      </button>
+    `;
+  }
+
+  if (branch === 'Тузель') {
+    content += `
+      <button class="secondary" onclick="contact('isa_abd09')">
+        💈 Ислам — универсал<br>✂️ Стрижка: 85 000<br>🧔 Борода: 55 000
+      </button>
+    `;
+  }
+
+  content += `
+    <button class="secondary" onclick="showServices()">
+      ⬅️ Назад к филиалам
+    </button>
+  `;
+
+  document.getElementById("app").innerHTML = content;
+}
+
 
 
   function contact(username) {
   window.open("https://t.me/" + username, "_blank");
 }
+
+function goBack() {
+  location.reload();
+}
+
 </script>
 
 </body>
