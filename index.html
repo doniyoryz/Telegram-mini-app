@@ -132,19 +132,31 @@
   }
 
   function showServices() {
-    document.getElementById("app").innerHTML = `
-      <h1>${texts[lang].services}</h1>
-      <button class="secondary">${texts[lang].haircut}</button>
-      <button class="secondary">${texts[lang].beard}</button>
-      <button class="secondary">${texts[lang].combo}</button>
-      <button class="primary" onclick="contact()">${texts[lang].contact}</button>
-      <button class="secondary" onclick="Telegram.WebApp.close()">${texts[lang].close}</button>
-    `;
-  }
+  document.getElementById("app").innerHTML = `
+    <h1>Выберите барбера</h1>
 
-  function contact() {
-    window.open("https://t.me/d_zafarogli", "_blank");
-  }
+    <button class="secondary" onclick="contact('d_zafarogli')">
+      💈 Дониёр — 5 лет опыта
+    </button>
+
+    <button class="secondary" onclick="contact('ryoithab')">
+      💈 Бахтиёр — fade, борода
+    </button>
+
+    <button class="secondary" onclick="contact('CJskadi')">
+      💈 Махмуд — классика
+    </button>
+
+    <button class="secondary" onclick="Telegram.WebApp.close()">
+      ❌ Закрыть
+    </button>
+  `;
+}
+
+
+  function contact(username) {
+  window.open("https://t.me/" + username, "_blank");
+}
 </script>
 
 </body>
