@@ -62,24 +62,29 @@
     };
     let booking = {};
 
+function showAllBarbers() {
+  let html = `<h1>💈 Выберите барбера</h1>`;
 
-    /* ========= ЭКРАН 1: ФИЛИАЛЫ ========= */
-    function showServices() {
-      let html = `<h1>📍 Выберите филиал</h1>`;
+  Object.entries(BARBERS).forEach(([branch, barbers]) => {
+    barbers.forEach(b => {
+      html += `
+        <button class="secondary" onclick="selectBarber('${b.name}', '${b.tg}', '${branch}')">
+          💈 ${b.name} — ${b.exp}<br>
+          📍 ${branch}<br>
+          ✂️ Стрижка: ${b.cut.toLocaleString()}<br>
+          🧔 Борода: ${b.beard.toLocaleString()}
+        </button>
+      `;
+    });
+  });
 
-      Object.keys(BARBERS).forEach(branch => {
-        html += `
-          <button class="secondary" onclick="showBarbers('${branch}')">
-            📍 ${branch}
-          </button>
-        `;
-      });
-
-      document.getElementById("app").innerHTML = html;
-    }
-  function selectBarber(name, tg) {
+  document.getElementById("app").innerHTML = html;
+}
+  function selectBarber(name, tg, branch) {
   booking.barber = name;
   booking.tg = tg;
+  booking.branch = branch;
+
 
   let html = `
     <h1>✂️ Выберите услугу</h1>
@@ -96,9 +101,9 @@
       💈 Комплекс
     </button>
 
-    <button class="secondary" onclick="showServices()">
-      ⬅️ Назад
-    </button>
+    <button class="secondary" onclick="showAllBarbers()">
+  ⬅️ Назад
+</button>
   `;
 
   document.getElementById("app").innerHTML = html;
@@ -121,9 +126,10 @@ function selectService(service) {
       Завтра
     </button>
 
-    <button class="secondary" onclick="selectBarber(booking.barber, booking.tg)">
+    <button class="secondary" onclick="selectBarber(booking.barber, booking.tg, booking.branch)">
       ⬅️ Назад
     </button>
+
   `;
 
   document.getElementById("app").innerHTML = html;
@@ -166,16 +172,17 @@ function confirmBooking(time) {
       📩 Написать барберу
     </button>
 
-    <button class="secondary" onclick="showServices()">
-      🔁 Новая запись
+    <button class="secondary" onclick="showAllBarbers()">
+     🔁 Новая запись
     </button>
+
   `;
 
   document.getElementById("app").innerHTML = html;
 }
 
     /* ========= ЭКРАН 2: БАРБЕРЫ ========= */
-    function showBarbers(branch) {
+   
       let html = `<h1>💈 Барберы</h1>`;
 
       BARBERS[branch].forEach(b => {
@@ -189,7 +196,7 @@ function confirmBooking(time) {
       });
 
       html += `
-        <button class="secondary" onclick="showServices()">
+        <button class="secondary" onclick="showAllBarbers()"
           ⬅️ Назад к филиалам
         </button>
       `;
@@ -203,7 +210,7 @@ function confirmBooking(time) {
     }
 
     /* ========= START ========= */
-    showServices();
+    showAllBarbers();
   </script>
 </body>
 </html>
