@@ -4,206 +4,107 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sartarosh</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
       background: #0f172a;
-      color: #ffffff;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: white;
     }
-    .app {
-      width: 100%;
-      max-width: 360px;
-      padding: 24px;
-      text-align: center;
+
+    #app {
+      padding: 20px;
     }
+
     h1 {
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-    p {
-      font-size: 14px;
-      opacity: 0.85;
+      text-align: center;
       margin-bottom: 20px;
     }
-    button {
+
+    button.secondary {
       width: 100%;
       padding: 14px;
-      margin-bottom: 10px;
-      border: none;
-      border-radius: 10px;
-      font-size: 15px;
-      cursor: pointer;
-    }
-    .primary {
-      background: #22c55e;
-      color: #000;
-    }
-    .secondary {
+      margin-bottom: 12px;
       background: #1e293b;
-      color: #fff;
       border: 1px solid #334155;
+      color: white;
+      border-radius: 12px;
+      font-size: 16px;
+      text-align: left;
     }
-    .lang {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .lang button {
-      width: auto;
-      padding: 6px 12px;
-      font-size: 13px;
-    }
-    .footer {
-      font-size: 11px;
-      opacity: 0.6;
-      margin-top: 20px;
+
+    button.secondary:active {
+      background: #334155;
     }
   </style>
 </head>
+
 <body>
+  <div id="app"></div>
 
-<div class="app" id="app">
-  <div class="lang">
-    <button class="secondary" onclick="setLang('ru')">RU</button>
-    <button class="secondary" onclick="setLang('uz')">UZ</button>
-  </div>
+  <script>
+    /* ========= ДАННЫЕ ========= */
+    const BARBERS = {
+      "Феруза 2, 7-дом": [
+        { name: "Дониёр", exp: "5 лет опыта", cut: 120000, beard: 80000, tg: "d_zafarogli" },
+        { name: "Бек", exp: "fade, борода", cut: 100000, beard: 70000, tg: "ryoithab" }
+      ],
+      "Абай": [
+        { name: "Махмуд", exp: "классика", cut: 90000, beard: 60000, tg: "CjSkadi" }
+      ],
+      "Тузель": [
+        { name: "Ислам", exp: "универсал", cut: 85000, beard: 55000, tg: "isa_abd09" }
+      ]
+    };
 
-  <h1 id="title">💈 Онлайн-запись к барберу</h1>
-  <p id="desc">
-    Запишись на стрижку или бороду за 1 минуту.<br>
-    Без звонков и ожиданий.
-  </p>
+    /* ========= ЭКРАН 1: ФИЛИАЛЫ ========= */
+    function showServices() {
+      let html = `<h1>📍 Выберите филиал</h1>`;
 
-  <button class="primary" onclick="showServices()" id="mainBtn">
-    Записаться
-  </button>
+      Object.keys(BARBERS).forEach(branch => {
+        html += `
+          <button class="secondary" onclick="showBarbers('${branch}')">
+            📍 ${branch}
+          </button>
+        `;
+      });
 
-  <div class="footer" id="footer">
-    Ваши данные не передаются третьим лицам
-  </div>
-</div>
-
-<script>
-  const tg = Telegram.WebApp;
-  tg.expand();
-
-  const texts = {
-    ru: {
-      title: "💈 Онлайн-запись к барберу",
-      desc: "Запишись на стрижку или бороду за 1 минуту.<br>Без звонков и ожиданий.",
-      mainBtn: "Записаться",
-      footer: "Ваши данные не передаются третьим лицам",
-      services: "Выберите услугу",
-      haircut: "✂️ Стрижка",
-      beard: "🧔 Борода",
-      combo: "🔥 Комплекс",
-      contact: "📲 Написать в Telegram",
-      close: "❌ Закрыть"
-    },
-    uz: {
-      title: "💈 Barberga onlayn yozilish",
-      desc: "Soch yoki soqol olishga 1 daqiqada yoziling.<br>Qo‘ng‘iroqlarsiz va kutishsiz.",
-      mainBtn: "Yozilish",
-      footer: "Ma’lumotlaringiz uchinchi shaxslarga berilmaydi",
-      services: "Xizmatni tanlang",
-      haircut: "✂️ Soch olish",
-      beard: "🧔 Soqol olish",
-      combo: "🔥 Kompleks",
-      contact: "📲 Telegram’da yozish",
-      close: "❌ Yopish"
+      document.getElementById("app").innerHTML = html;
     }
-  };
 
-  let lang = "ru";
+    /* ========= ЭКРАН 2: БАРБЕРЫ ========= */
+    function showBarbers(branch) {
+      let html = `<h1>💈 Барберы</h1>`;
 
-  function setLang(l) {
-    lang = l;
-    document.getElementById("title").innerHTML = texts[l].title;
-    document.getElementById("desc").innerHTML = texts[l].desc;
-    document.getElementById("mainBtn").innerHTML = texts[l].mainBtn;
-    document.getElementById("footer").innerHTML = texts[l].footer;
-  }
+      BARBERS[branch].forEach(b => {
+        html += `
+          <button class="secondary" onclick="contact('${b.tg}')">
+            💈 ${b.name} — ${b.exp}<br>
+            ✂️ Стрижка: ${b.cut.toLocaleString()}<br>
+            🧔 Борода: ${b.beard.toLocaleString()}
+          </button>
+        `;
+      });
 
-  function showServices() {
-  document.getElementById("app").innerHTML = `
-    <h1>📍 Выберите филиал</h1>
+      html += `
+        <button class="secondary" onclick="showServices()">
+          ⬅️ Назад к филиалам
+        </button>
+      `;
 
-    <button class="secondary" onclick="showBarbers('Феруза 2, 7-дом')">
-      🏙 Феруза 2, 7-дом
-    </button>
+      document.getElementById("app").innerHTML = html;
+    }
 
-    <button class="secondary" onclick="showBarbers('Абай')">
-      🌆 Абай
-    </button>
+    /* ========= КОНТАКТ ========= */
+    function contact(username) {
+      window.open("https://t.me/" + username, "_blank");
+    }
 
-    <button class="secondary" onclick="showBarbers('Тузель')">
-      🏘 Тузель
-    </button>
-
-    <button class="secondary" onclick="goBack()">
-      ⬅️ Назад
-    </button>
-  `;
-}
-function showBarbers(branch) {
-  let content = `<h1>💈 Барберы</h1>`;
-
-  if (branch === 'Феруза 2, 7-дом') {
-    content += `
-      <button class="secondary" onclick="contact('d_zafarogli')">
-        💈 Дониёр — 5 лет опыта<br>✂️ Стрижка: 120 000<br>🧔 Борода: 80 000
-      </button>
-
-      <button class="secondary" onclick="contact('ryoithab')">
-        💈 Бек — fade, борода<br>✂️ Стрижка: 100 000<br>🧔 Борода: 70 000
-      </button>
-    `;
-  }
-
-  if (branch === 'Абай') {
-    content += `
-      <button class="secondary" onclick="contact('CJskadi')">
-        💈 Махмуд — классика<br>✂️ Стрижка: 90 000<br>🧔 Борода: 60 000
-      </button>
-    `;
-  }
-
-  if (branch === 'Тузель') {
-    content += `
-      <button class="secondary" onclick="contact('isa_abd09')">
-        💈 Ислам — универсал<br>✂️ Стрижка: 85 000<br>🧔 Борода: 55 000
-      </button>
-    `;
-  }
-
-  content += `
-    <button class="secondary" onclick="showServices()">
-      ⬅️ Назад к филиалам
-    </button>
-  `;
-
-  document.getElementById("app").innerHTML = content;
-}
-
-
-
-  function contact(username) {
-  window.open("https://t.me/" + username, "_blank");
-}
-
-function goBack() {
-  location.reload();
-}
-
-</script>
-
+    /* ========= START ========= */
+    showServices();
+  </script>
 </body>
 </html>
+
 
