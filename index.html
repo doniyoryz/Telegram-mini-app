@@ -51,7 +51,7 @@
     const BARBERS = {
       "Феруза 2, 7-дом": [
         { name: "Дониёр", exp: "5 лет опыта", cut: 120000, beard: 80000, tg: "d_zafarogli" },
-        { name: "Бек", exp: "fade, борода", cut: 100000, beard: 70000, tg: "ryoithab" }
+        { name: "Бахтиёр", exp: "fade, борода", cut: 100000, beard: 70000, tg: "ryoithab" }
       ],
       "Абай": [
         { name: "Махмуд", exp: "классика", cut: 90000, beard: 60000, tg: "CjSkadi" }
@@ -131,7 +131,7 @@ function selectService(service) {
 function selectDate(date) {
   booking.date = date;
 
-  let times = ["10:00", "11:30", "13:00", "15:00", "17:00"];
+  let times = ["10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00",];
 
   let html = `<h1>⏰ Выберите время</h1>`;
 
