@@ -177,7 +177,7 @@ function confirmBooking(time) {
 
       BARBERS[branch].forEach(b => {
         html += `
-          <button class="secondary" onclick="contact('${b.tg}')">
+          <button class="secondary" onclick="selectBarber('${b.name}', '${b.tg}')">
             💈 ${b.name} — ${b.exp}<br>
             ✂️ Стрижка: ${b.cut.toLocaleString()}<br>
             🧔 Борода: ${b.beard.toLocaleString()}
