@@ -77,6 +77,8 @@
 .location {
   font-size: 12px;
   opacity: 0.7;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .cta {
@@ -136,6 +138,11 @@
 
 let booking = {};
 let searchQuery = "";
+    
+function openYandexMap(address) {
+  const url = `https://yandex.uz/maps/?text=${encodeURIComponent(address)}`;
+  window.open(url, "_blank");
+}
 
 function showAllBarbers() {
   let html = `
@@ -178,8 +185,12 @@ function showAllBarbers() {
           <div class="name">${b.name}</div>
           <div class="rating">⭐ 4.8 • ${b.exp}</div>
           <div class="price">✂️ от ${b.cut.toLocaleString()} сум</div>
-          <div class="location">📍 ${b.address}</div>
-        </div>
+          <div class="location"
+     onclick="event.stopPropagation(); openYandexMap('${b.address}')">
+  📍 ${b.address}
+</div>
+
+
 
         <div class="cta">Выбрать</div>
       </div>
