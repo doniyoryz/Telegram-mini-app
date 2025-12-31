@@ -96,14 +96,14 @@
 
     /* ========= ДАННЫЕ ========= */
     const BARBERS = {
-      "Феруза 2, 7-дом": [
-        {
+      {
   name: "Дониёр",
   exp: "5 лет опыта",
   cut: 120000,
   beard: 80000,
   tg: "d_zafarogli",
-  photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true"
+  photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true",
+  address: "Темур Малик 27"
 }
 ,
         {
@@ -113,10 +113,10 @@
   beard: 70000,
   tg: "ryoithab",
   photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true"
+  address: "Феруза 2, 7-дом"
 }
 
       ],
-      "Абай": [
         {
   name: "Махмуд",
   exp: "fade, борода",
@@ -124,10 +124,10 @@
   beard: 70000,
   tg: "CJskadi",
   photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/maxa.jpg?raw=true"
+  address: "Абай"
 }
 
       ],
-      "Тузель": [
         {
   name: "Ислом",
   exp: "fade, борода",
@@ -135,6 +135,7 @@
   beard: 70000,
   tg: "isa_abd09",
   photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/isa.jpg?raw=true"
+  address: "Тузель"
 }
 
       ]
@@ -155,7 +156,7 @@ function showAllBarbers() {
       <div class="name">${b.name}</div>
       <div class="rating">⭐ 4.8 • ${b.exp}</div>
       <div class="price">✂️ от ${b.cut.toLocaleString()} сум</div>
-      <div class="location">📍 ${branch}</div>
+      <div class="location">📍 ${b.address || branch}</div>
     </div>
 
     <div class="cta">Выбрать</div>
