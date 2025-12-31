@@ -6,97 +6,112 @@
 <title>Sartarosh</title>
 
 <style>
-:root {
-  --bg:#0f172a;
-  --card:#1e293b;
-  --border:#334155;
+:root{
+  --bg:#0b1220;
+  --card:#111827;
+  --soft:#1f2937;
   --accent:#22c55e;
-  --text:#e5e7eb;
-  --muted:#94a3b8;
+  --text:#f9fafb;
+  --muted:#9ca3af;
 }
 
-body {
+*{box-sizing:border-box}
+
+body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,sans-serif;
   background:var(--bg);
   color:var(--text);
 }
 
-#app { padding:20px; }
+#app{padding:20px}
 
-h1 {
-  text-align:center;
+h1{
+  font-size:22px;
   margin-bottom:14px;
-  font-size:20px;
+  text-align:center;
 }
 
-input, select {
+input,select{
   width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  border-radius:14px;
+  padding:14px;
+  border-radius:16px;
   border:none;
   background:#020617;
   color:var(--text);
   font-size:15px;
+  margin-bottom:12px;
 }
 
-.barber-card {
+/* ===== CARD ===== */
+.barber-card{
   display:flex;
-  gap:12px;
+  gap:14px;
   background:var(--card);
-  padding:12px;
-  border-radius:16px;
-  margin-bottom:12px;
+  padding:14px;
+  border-radius:20px;
+  margin-bottom:14px;
   cursor:pointer;
   transition:.15s;
 }
-.barber-card:active { transform:scale(.98); }
+.barber-card:active{transform:scale(.97)}
 
-.avatar {
-  width:64px;
-  height:64px;
-  border-radius:14px;
+.avatar{
+  width:72px;
+  height:72px;
+  border-radius:18px;
   object-fit:cover;
 }
 
-.info { flex:1; }
-.name { font-weight:600;font-size:16px; }
-.small { font-size:13px;color:var(--muted); }
+.info{flex:1}
 
-button {
+.name{
+  font-size:17px;
+  font-weight:600;
+}
+
+.meta{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* ===== BUTTONS ===== */
+button{
   width:100%;
-  padding:14px;
-  margin-top:10px;
-  border-radius:16px;
+  padding:16px;
+  border-radius:18px;
   border:none;
   font-size:16px;
   font-weight:500;
+  margin-top:12px;
 }
 
-.primary {
+.primary{
   background:var(--accent);
   color:#022c22;
 }
 
-.secondary {
-  background:var(--card);
+.secondary{
+  background:var(--soft);
   color:var(--text);
-  border:1px solid var(--border);
 }
 
-.slot {
-  padding:14px;
-  border-radius:14px;
-  margin-bottom:8px;
+/* ===== SLOTS ===== */
+.slot{
   background:var(--card);
+  padding:16px;
+  border-radius:18px;
+  margin-bottom:10px;
+  font-size:15px;
 }
-.busy {
-  opacity:.4;
-}
-.center {
+.busy{opacity:.4}
+
+/* ===== CENTER ===== */
+.center{
   text-align:center;
   color:var(--muted);
+  font-size:14px;
 }
 </style>
 </head>
@@ -106,183 +121,110 @@ button {
 
 <script>
 /* ===== DATA ===== */
-const BARBERS = [
-  {
-    name:"Дониёр",
-    cut:120000,
-    exp:"5 лет опыта",
-    address:"Темур Малик 27",
-    lat:41.348373,
-    lng:69.356767,
-    photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true"
-  },
-  {
-    name:"Бахтиёр",
-    cut:100000,
-    exp:"fade, борода",
-    address:"Феруза 2, 7-дом",
-    lat:41.350620,
-    lng:69.360765,
-    photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true"
-  },
-  {
-    name:"Махмуд",
-    cut:90000,
-    exp:"классика",
-    address:"Абай",
-    lat:41.325278,
-    lng:69.257854,
-    photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/maxa.jpg?raw=true"
-  },
-  {
-    name:"Ислом",
-    cut:85000,
-    exp:"универсал",
-    address:"Тузель",
-    lat:41.307816,
-    lng:69.426187,
-    photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/isa.jpg?raw=true"
-  }
+const BARBERS=[
+ {name:"Дониёр",cut:120000,exp:"5 лет опыта",address:"Темур Малик 27",photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true"},
+ {name:"Бахтиёр",cut:100000,exp:"fade, борода",address:"Феруза 2, 7-дом",photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true"},
+ {name:"Махмуд",cut:90000,exp:"классика",address:"Абай",photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/maxa.jpg?raw=true"},
+ {name:"Ислом",cut:85000,exp:"универсал",address:"Тузель",photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/isa.jpg?raw=true"}
 ];
 
-// демо занятости
-const BUSY = {
-  "Дониёр":["11:00","15:00"],
-  "Бахтиёр":["12:00"]
-};
+const BUSY={"Дониёр":["11:00","15:00"]};
 
-let booking = {};
-let search = "";
-let maxPrice = 200000;
+let booking={},search="",maxPrice=200000;
 
 /* ===== LIST ===== */
 function showAll(){
-  let html = `
-    <h1>💈 Барберы</h1>
+ let html=`
+ <h1>💈 Барберы</h1>
+ <input placeholder="🔍 Имя или адрес" oninput="search=this.value;showAll()">
+ <select onchange="maxPrice=this.value;showAll()">
+  <option value="200000">Любая цена</option>
+  <option value="100000">до 100 000</option>
+ </select>
+ `;
 
-    <input placeholder="🔍 Имя или адрес"
-      oninput="search=this.value;showAll()">
+ BARBERS.filter(b=>
+  (b.name+b.address).toLowerCase().includes(search.toLowerCase())
+  && b.cut<=maxPrice
+ ).forEach(b=>{
+ html+=`
+ <div class="barber-card" onclick="profile('${b.name}')">
+  <img class="avatar" src="${b.photo}">
+  <div class="info">
+    <div class="name">${b.name}</div>
+    <div class="meta">✂️ от ${b.cut.toLocaleString()} сум</div>
+    <div class="meta">📍 ${b.address}</div>
+  </div>
+ </div>`;
+ });
 
-    <select onchange="maxPrice=this.value;showAll()">
-      <option value="200000">Любая цена</option>
-      <option value="100000">до 100 000</option>
-    </select>
-  `;
-
-  const filtered = BARBERS.filter(b =>
-    (b.name+b.address).toLowerCase().includes(search.toLowerCase())
-    && b.cut <= maxPrice
-  );
-
-  if(!filtered.length){
-    html += `<p class="center">Ничего не найдено</p>`;
-  }
-
-  filtered.forEach(b=>{
-    html += `
-      <div class="barber-card" onclick="openProfile('${b.name}')">
-        <img class="avatar" src="${b.photo}">
-        <div class="info">
-          <div class="name">${b.name}</div>
-          <div class="small">✂️ от ${b.cut.toLocaleString()} сум</div>
-          <div class="small">📍 ${b.address}</div>
-        </div>
-      </div>
-    `;
-  });
-
-  app.innerHTML = html;
+ app.innerHTML=html;
 }
 
 /* ===== PROFILE ===== */
-function openProfile(name){
-  booking.barber = BARBERS.find(b=>b.name===name);
+function profile(name){
+ booking.barber=BARBERS.find(b=>b.name===name);
+ app.innerHTML=`
+ <h1>${booking.barber.name}</h1>
+ <img src="${booking.barber.photo}" style="width:100%;border-radius:22px">
+ <p class="center">${booking.barber.exp}</p>
+ <p class="center">📍 ${booking.barber.address}</p>
 
-  app.innerHTML = `
-    <h1>${booking.barber.name}</h1>
-
-    <img src="${booking.barber.photo}"
-      style="width:100%;border-radius:20px;margin-bottom:10px">
-
-    <p class="center">${booking.barber.exp}</p>
-    <p class="center">📍 ${booking.barber.address}</p>
-
-    <button class="primary" onclick="chooseService()">Записаться</button>
-    <button class="secondary" onclick="showAll()">Назад</button>
-  `;
+ <button class="primary" onclick="service()">Записаться</button>
+ <button class="secondary" onclick="showAll()">Назад</button>
+ `;
 }
 
-/* ===== SERVICE ===== */
-function chooseService(){
-  app.innerHTML = `
-    <h1>Услуга</h1>
-    <button class="secondary" onclick="booking.service='Стрижка';chooseDate()">Стрижка</button>
-    <button class="secondary" onclick="booking.service='Борода';chooseDate()">Борода</button>
-    <button class="secondary" onclick="openProfile(booking.barber.name)">Назад</button>
-  `;
+/* ===== FLOW ===== */
+function service(){
+ app.innerHTML=`
+ <h1>Услуга</h1>
+ <button class="secondary" onclick="booking.service='Стрижка';date()">Стрижка</button>
+ <button class="secondary" onclick="booking.service='Борода';date()">Борода</button>
+ <button class="secondary" onclick="profile(booking.barber.name)">Назад</button>
+ `;
 }
 
-/* ===== DATE ===== */
-function chooseDate(){
-  const today = new Date().toDateString();
-  const tomorrow = new Date(Date.now()+86400000).toDateString();
-
-  app.innerHTML = `
-    <h1>Дата</h1>
-    <button class="secondary" onclick="booking.date='${today}';chooseTime()">Сегодня</button>
-    <button class="secondary" onclick="booking.date='${tomorrow}';chooseTime()">Завтра</button>
-    <button class="secondary" onclick="chooseService()">Назад</button>
-  `;
+function date(){
+ const t=new Date().toDateString();
+ const tm=new Date(Date.now()+86400000).toDateString();
+ app.innerHTML=`
+ <h1>Дата</h1>
+ <button class="secondary" onclick="booking.date='${t}';time()">Сегодня</button>
+ <button class="secondary" onclick="booking.date='${tm}';time()">Завтра</button>
+ <button class="secondary" onclick="service()">Назад</button>
+ `;
 }
 
-/* ===== TIME ===== */
-function chooseTime(){
-  const times = ["10:00","11:00","12:00","14:00","15:00","16:00","17:00"];
-  const busy = BUSY[booking.barber.name] || [];
-
-  let html = `<h1>Время</h1>`;
-
-  times.forEach(t=>{
-    const isBusy = busy.includes(t);
-    html += `
-      <div class="slot ${isBusy?'busy':''}"
-        onclick="${isBusy?'':`confirmBooking('${t}')`}">
-        ⏰ ${t} ${isBusy?'(занято)':''}
-      </div>
-    `;
-  });
-
-  html += `<button class="secondary" onclick="chooseDate()">Назад</button>`;
-  app.innerHTML = html;
+function time(){
+ let html=`<h1>Время</h1>`;
+ ["10:00","11:00","12:00","14:00","15:00"].forEach(t=>{
+  const busy=(BUSY[booking.barber.name]||[]).includes(t);
+  html+=`<div class="slot ${busy?'busy':''}" onclick="${busy?'':`confirm('${t}')`}">
+  ⏰ ${t} ${busy?'(занято)':''}</div>`;
+ });
+ html+=`<button class="secondary" onclick="date()">Назад</button>`;
+ app.innerHTML=html;
 }
 
-/* ===== CONFIRM ===== */
-function confirmBooking(time){
-  booking.time = time;
-  booking.status = "pending";
-
-  app.innerHTML = `
-    <h1>⏳ Запрос отправлен</h1>
-
-    <p class="center">
-      Барбер подтвердит запись<br>
-      <br>
-      ${booking.barber.name}<br>
-      ${booking.service}<br>
-      ${booking.date}<br>
-      ${booking.time}
-    </p>
-
-    <button class="secondary" onclick="showAll()">
-      На главную
-    </button>
-  `;
+function confirm(t){
+ booking.time=t;
+ app.innerHTML=`
+ <h1>⏳ Запрос отправлен</h1>
+ <p class="center">
+ ${booking.barber.name}<br>
+ ${booking.service}<br>
+ ${booking.date}<br>
+ ${booking.time}
+ </p>
+ <button class="secondary" onclick="showAll()">На главную</button>
+ `;
 }
 
-/* START */
 showAll();
 </script>
 </body>
 </html>
+
 
 
