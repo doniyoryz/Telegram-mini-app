@@ -22,6 +22,16 @@
       margin-bottom: 16px;
     }
 
+    .input, .select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      border: none;
+      font-size: 15px;
+      outline: none;
+    }
+
     button.secondary {
       width: 100%;
       padding: 14px;
@@ -31,7 +41,7 @@
       color: white;
       border-radius: 12px;
       font-size: 16px;
-      text-align: center;
+      text-align: left;
     }
 
     .barber-card {
@@ -42,7 +52,6 @@
       padding: 12px;
       margin-bottom: 14px;
       align-items: center;
-      cursor: pointer;
     }
 
     .barber-card:active {
@@ -68,7 +77,6 @@
     .rating {
       font-size: 13px;
       opacity: 0.8;
-      margin-top: 2px;
     }
 
     .price {
@@ -78,10 +86,9 @@
 
     .location {
       font-size: 12px;
-      opacity: 0.75;
-      margin-top: 4px;
-      text-decoration: underline;
+      opacity: 0.7;
       cursor: pointer;
+      text-decoration: underline;
     }
 
     .cta {
@@ -89,188 +96,140 @@
       opacity: 0.9;
       white-space: nowrap;
     }
-
-    input.search {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 16px;
-      border-radius: 12px;
-      border: none;
-      font-size: 15px;
-      outline: none;
-    }
   </style>
 </head>
 
 <body>
-  <div id="app"></div>
+<div id="app"></div>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script>
-    const BARBERS = [
-      {
-        name: "Дониёр",
-        exp: "5 лет опыта",
-        cut: 120000,
-        beard: 80000,
-        tg: "d_zafarogli",
-        photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true",
-        address: "Темур Малик 27"
-        lat: 41.348373,
-        lng: 69.356767
-      },
-      {
-        name: "Бахтиёр",
-        exp: "fade, борода",
-        cut: 100000,
-        beard: 70000,
-        tg: "ryoithab",
-        photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true",
-        address: "Феруза 2, 7-дом"
-        lat: 41.350620,
-        lng: 69.360765
-      },
-      {
-        name: "Махмуд",
-        exp: "классика",
-        cut: 90000,
-        beard: 60000,
-        tg: "CJskadi",
-        photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/maxa.jpg?raw=true",
-        address: "Абай"
-        lat: 41.325278,
-        lng: 69.257854
-      },
-      {
-        name: "Ислом",
-        exp: "универсал",
-        cut: 85000,
-        beard: 55000,
-        tg: "isa_abd09",
-        photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/isa.jpg?raw=true",
-        address: "Тузель"
-        lat: 41.307816,
-        lng: 69.426187
-      }
-    ];
+<script>
+/* ========= ДАННЫЕ ========= */
+const BARBERS = [
+  {
+    name: "Дониёр",
+    exp: "5 лет опыта",
+    cut: 120000,
+    beard: 80000,
+    tg: "d_zafarogli",
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true",
+    address: "Темур Малик 27",
+    lat: 41.311081,
+    lng: 69.240562
+  },
+  {
+    name: "Бахтиёр",
+    exp: "fade, борода",
+    cut: 100000,
+    beard: 70000,
+    tg: "ryoithab",
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true",
+    address: "Феруза 2, 7-дом",
+    lat: 41.344912,
+    lng: 69.287623
+  },
+  {
+    name: "Махмуд",
+    exp: "классика",
+    cut: 90000,
+    beard: 60000,
+    tg: "CJskadi",
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/maxa.jpg?raw=true",
+    address: "Абай",
+    lat: 41.328540,
+    lng: 69.281280
+  },
+  {
+    name: "Ислом",
+    exp: "универсал",
+    cut: 85000,
+    beard: 55000,
+    tg: "isa_abd09",
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/isa.jpg?raw=true",
+    address: "Тузель",
+    lat: 41.364210,
+    lng: 69.341870
+  }
+];
 
-    let booking = {};
-    let searchQuery = "";
+let booking = {};
+let search = "";
+let serviceFilter = "all";
+let sortPrice = "none";
 
-    function openYandexMap(address) {
-      const url = `https://yandex.uz/maps/?text=${encodeURIComponent(address)}`;
-      window.open(url, "_blank");
-    }
+/* ========= MAP ========= */
+function openYandexMap(lat, lng) {
+  window.open(`https://yandex.uz/maps/?ll=${lng},${lat}&z=17`, "_blank");
+}
 
-    function onSearch(value) {
-      searchQuery = value;
-      showAllBarbers();
-    }
+/* ========= UI ========= */
+function showAllBarbers() {
+  let html = `
+    <h1>💈 Выберите барбера</h1>
 
-    function showAllBarbers() {
-      let html = `
-        <h1>💈 Выберите барбера</h1>
-        <input
-          class="search"
-          type="text"
-          placeholder="🔍 Поиск по имени или адресу"
-          value="${searchQuery}"
-          oninput="onSearch(this.value)"
-        />
-      `;
+    <input class="input" placeholder="🔍 Поиск по имени или адресу"
+      oninput="search=this.value; showAllBarbers()"/>
 
-      const filtered = BARBERS.filter(b =>
-        b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        b.address.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+    <select class="select" onchange="serviceFilter=this.value; showAllBarbers()">
+      <option value="all">Все услуги</option>
+      <option value="cut">Стрижка</option>
+      <option value="beard">Борода</option>
+    </select>
 
-      if (filtered.length === 0) {
-        html += `<p style="opacity:0.6;text-align:center">Ничего не найдено</p>`;
-      }
+    <select class="select" onchange="sortPrice=this.value; showAllBarbers()">
+      <option value="none">Без сортировки</option>
+      <option value="asc">Цена ↑</option>
+      <option value="desc">Цена ↓</option>
+    </select>
+  `;
 
-      filtered.forEach(b => {
-        html += `
-          <div class="barber-card" onclick="selectBarber('${b.name}', '${b.tg}', '${b.address}')">
-            <img class="avatar" src="${b.photo}" />
-            <div class="info">
-              <div class="name">${b.name}</div>
-              <div class="rating">⭐ 4.8 • ${b.exp}</div>
-              <div class="price">✂️ от ${b.cut.toLocaleString()} сум</div>
-              <div class="location"
-  onclick="event.stopPropagation(); openYandexMap(${b.lat}, ${b.lng})">
-  📍 ${b.address}
-</div>
+  let list = BARBERS.filter(b =>
+    b.name.toLowerCase().includes(search.toLowerCase()) ||
+    b.address.toLowerCase().includes(search.toLowerCase())
+  );
 
-            </div>
-            <div class="cta">Выбрать</div>
+  if (serviceFilter === "cut") list = list.filter(b => b.cut);
+  if (serviceFilter === "beard") list = list.filter(b => b.beard);
+
+  if (sortPrice === "asc") list.sort((a,b)=>a.cut-b.cut);
+  if (sortPrice === "desc") list.sort((a,b)=>b.cut-a.cut);
+
+  if (!list.length) {
+    html += `<p style="text-align:center;opacity:.6">Ничего не найдено</p>`;
+  }
+
+  list.forEach(b => {
+    html += `
+      <div class="barber-card" onclick="selectBarber('${b.name}','${b.tg}')">
+        <img class="avatar" src="${b.photo}">
+        <div class="info">
+          <div class="name">${b.name}</div>
+          <div class="rating">⭐ ${b.exp}</div>
+          <div class="price">✂️ от ${b.cut.toLocaleString()} сум</div>
+          <div class="location"
+            onclick="event.stopPropagation(); openYandexMap(${b.lat},${b.lng})">
+            📍 ${b.address}
           </div>
-        `;
-      });
+        </div>
+        <div class="cta">Выбрать</div>
+      </div>
+    `;
+  });
 
-      document.getElementById("app").innerHTML = html;
-    }
+  document.getElementById("app").innerHTML = html;
+}
 
-    function selectBarber(name, tg, address) {
-      booking = { barber: name, tg, address };
+/* ========= FLOW ========= */
+function selectBarber(name,tg){
+  booking={name,tg};
+  document.getElementById("app").innerHTML=`
+    <h1>✂️ Услуга</h1>
+    <button class="secondary" onclick="alert('Готово!')">Стрижка</button>
+    <button class="secondary" onclick="showAllBarbers()">⬅️ Назад</button>
+  `;
+}
 
-      document.getElementById("app").innerHTML = `
-        <h1>✂️ Выберите услугу</h1>
-
-        <button class="secondary" onclick="selectService('Стрижка')">✂️ Стрижка</button>
-        <button class="secondary" onclick="selectService('Борода')">🧔 Борода</button>
-        <button class="secondary" onclick="selectService('Комплекс')">💈 Комплекс</button>
-        <button class="secondary" onclick="showAllBarbers()">⬅️ Назад</button>
-      `;
-    }
-
-    function selectService(service) {
-      booking.service = service;
-
-      const today = new Date().toDateString();
-      const tomorrow = new Date(Date.now() + 86400000).toDateString();
-
-      document.getElementById("app").innerHTML = `
-        <h1>📅 Выберите дату</h1>
-        <button class="secondary" onclick="selectDate('${today}')">Сегодня</button>
-        <button class="secondary" onclick="selectDate('${tomorrow}')">Завтра</button>
-        <button class="secondary" onclick="selectBarber(booking.barber, booking.tg, booking.address)">⬅️ Назад</button>
-      `;
-    }
-
-    function selectDate(date) {
-      booking.date = date;
-      const times = ["10:00","11:00","12:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
-
-      let html = `<h1>⏰ Выберите время</h1>`;
-      times.forEach(t => {
-        html += `<button class="secondary" onclick="confirmBooking('${t}')">${t}</button>`;
-      });
-
-      html += `<button class="secondary" onclick="selectService(booking.service)">⬅️ Назад</button>`;
-      document.getElementById("app").innerHTML = html;
-    }
-
-    function confirmBooking(time) {
-      booking.time = time;
-
-      document.getElementById("app").innerHTML = `
-        <h1>✅ Подтверждение</h1>
-        💈 Барбер: ${booking.barber}<br>
-        ✂️ Услуга: ${booking.service}<br>
-        📅 Дата: ${booking.date}<br>
-        ⏰ Время: ${booking.time}<br><br>
-
-        <button class="secondary" onclick="contact(booking.tg)">📩 Написать барберу</button>
-        <button class="secondary" onclick="showAllBarbers()">🔁 Новая запись</button>
-      `;
-    }
-
-    function contact(username) {
-      window.open("https://t.me/" + username, "_blank");
-    }
-
-    showAllBarbers();
-  </script>
+showAllBarbers();
+</script>
 </body>
 </html>
 
