@@ -9,69 +9,102 @@
 body {
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,sans-serif;
-  background:#0f172a;
-  color:white;
+  background:#0b1220;
+  color:#e5e7eb;
 }
-#app { padding:20px; }
-h1 { text-align:center;margin-bottom:14px; }
 
+#app {
+  padding:16px;
+}
+
+h1 {
+  font-size:20px;
+  font-weight:600;
+  text-align:center;
+  margin:12px 0 16px;
+}
+
+/* INPUTS */
 input, select {
   width:100%;
-  padding:12px;
+  padding:14px;
   margin-bottom:12px;
-  border-radius:12px;
+  border-radius:16px;
   border:none;
+  background:#111827;
+  color:white;
   font-size:15px;
 }
 
+/* BARBER CARD */
 .barber-card {
   display:flex;
-  gap:12px;
-  background:#1e293b;
-  padding:12px;
-  border-radius:14px;
+  gap:14px;
+  background:#111827;
+  padding:14px;
+  border-radius:18px;
   margin-bottom:12px;
-  cursor:pointer;
+  transition:.15s;
+}
+
+.barber-card:active {
+  transform:scale(.98);
 }
 
 .avatar {
-  width:64px;
-  height:64px;
-  border-radius:12px;
+  width:72px;
+  height:72px;
+  border-radius:16px;
   object-fit:cover;
 }
 
+/* TEXT */
 .info { flex:1; }
-.name { font-weight:600;font-size:16px; }
-.small { font-size:13px;opacity:.75; }
+.name {
+  font-size:16px;
+  font-weight:600;
+  margin-bottom:4px;
+}
+.small {
+  font-size:13px;
+  color:#9ca3af;
+  line-height:1.4;
+}
 
+/* BUTTONS */
 button {
   width:100%;
-  padding:14px;
-  margin-top:10px;
-  border-radius:12px;
+  padding:15px;
+  margin-top:12px;
+  border-radius:16px;
   border:none;
   font-size:16px;
+  font-weight:500;
 }
 
-.primary { background:#22c55e;color:black; }
+.primary {
+  background:#22c55e;
+  color:#052e16;
+}
+
 .secondary {
-  background:#1e293b;
-  color:white;
-  border:1px solid #334155;
+  background:transparent;
+  color:#9ca3af;
+  border:1px solid #1f2937;
 }
 
+/* TIME SLOTS */
 .slot {
-  padding:14px;
-  border-radius:12px;
-  margin-bottom:8px;
-  background:#1e293b;
-  cursor:pointer;
+  padding:16px;
+  border-radius:16px;
+  margin-bottom:10px;
+  background:#111827;
+  display:flex;
+  justify-content:space-between;
 }
 
 .busy {
-  opacity:.4;
-  cursor:not-allowed;
+  opacity:.35;
 }
 </style>
 </head>
