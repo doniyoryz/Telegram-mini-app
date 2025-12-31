@@ -135,13 +135,43 @@
 ];
 
 let booking = {};
+let searchQuery = "";
 
 function showAllBarbers() {
-  let html = `<h1>💈 Выберите барбера</h1>`;
+  let html = `
+    <h1>💈 Выберите барбера</h1>
 
-  BARBERS.forEach(b => {
+    <input
+      type="text"
+      placeholder="🔍 Поиск по имени или адресу"
+      value="${searchQuery}"
+      oninput="onSearch(this.value)"
+      style="
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 16px;
+        border-radius: 12px;
+        border: none;
+        font-size: 15px;
+        outline: none;
+      "
+    />
+  `;
+
+  const filtered = BARBERS.filter(b =>
+    b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    b.address.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (filtered.length === 0) {
+    html += `<p style="opacity:0.6;text-align:center">Ничего не найдено</p>`;
+  }
+
+  filtered.forEach(b => {
     html += `
-      <div class="barber-card" onclick="selectBarber('${b.name}', '${b.tg}', '${b.address}')">
+      <div class="barber-card"
+           onclick="selectBarber('${b.name}', '${b.tg}', '${b.address}')">
+
         <img class="avatar" src="${b.photo}" />
 
         <div class="info">
@@ -157,6 +187,10 @@ function showAllBarbers() {
   });
 
   document.getElementById("app").innerHTML = html;
+}
+function onSearch(value) {
+  searchQuery = value;
+  showAllBarbers();
 }
 
   function selectBarber(name, tg, branch) {
