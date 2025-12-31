@@ -9,6 +9,7 @@
 :root {
   --bg:#0b1220;
   --card:#111827;
+  --border:#1f2937;
   --text:#e5e7eb;
   --muted:#9ca3af;
   --accent:#22c55e;
@@ -21,18 +22,22 @@ body {
   color:var(--text);
 }
 
-#app {
+/* ===== HEADER ===== */
+.header {
+  position:sticky;
+  top:0;
+  background:var(--bg);
   padding:16px;
-  padding-bottom:90px;
+  z-index:5;
 }
 
-h1 {
+.header h1 {
   text-align:center;
+  margin:0 0 12px;
   font-size:20px;
-  margin:12px 0 16px;
 }
 
-input {
+.search {
   width:100%;
   padding:14px;
   border-radius:16px;
@@ -40,20 +45,25 @@ input {
   background:var(--card);
   color:white;
   font-size:15px;
-  margin-bottom:14px;
 }
 
-/* ===== CARDS ===== */
-.barber {
+/* ===== LIST ===== */
+#list {
+  padding:16px;
+  padding-bottom:120px;
+}
+
+.card {
   display:flex;
   gap:14px;
   background:var(--card);
   padding:14px;
-  border-radius:18px;
+  border-radius:20px;
   margin-bottom:12px;
+  border:1px solid var(--border);
 }
 
-.barber:active { transform:scale(.98); }
+.card:active { transform:scale(.98); }
 
 .avatar {
   width:72px;
@@ -62,10 +72,25 @@ input {
   object-fit:cover;
 }
 
-.name { font-weight:600; }
+.name { font-weight:600;font-size:16px; }
 .small { font-size:13px;color:var(--muted); }
 
 /* ===== BOTTOM SHEET ===== */
+.backdrop {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  z-index:9;
+}
+
+.backdrop.active {
+  opacity:1;
+  pointer-events:auto;
+}
+
 .sheet {
   position:fixed;
   left:0;right:0;bottom:0;
@@ -81,10 +106,17 @@ input {
 
 .sheet h2 {
   text-align:center;
-  margin-bottom:16px;
+  margin-bottom:14px;
 }
 
-.sheet button {
+.step {
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:12px;
+}
+
+button {
   width:100%;
   padding:16px;
   border-radius:16px;
@@ -94,69 +126,56 @@ input {
 }
 
 .primary { background:var(--accent); color:#052e16; }
-.secondary { background:transparent;color:var(--muted);border:1px solid #1f2937; }
-
-/* ===== BACKDROP ===== */
-.backdrop {
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.45);
-  opacity:0;
-  pointer-events:none;
-  transition:.2s;
+.secondary {
+  background:transparent;
+  color:var(--muted);
+  border:1px solid var(--border);
 }
-
-.backdrop.active {
-  opacity:1;
-  pointer-events:auto;
+.slot {
+  padding:14px;
+  border-radius:14px;
+  background:#0b1220;
+  margin-bottom:8px;
 }
+.slot.busy { opacity:.4; }
+
 </style>
 </head>
 
 <body>
 
-<div id="app"></div>
-<div class="backdrop" onclick="closeSheet()"></div>
+<div class="header">
+  <h1>💈 Барберы</h1>
+  <input class="search" placeholder="🔍 Имя или адрес"
+    oninput="search=this.value;render()">
+</div>
 
+<div id="list"></div>
+
+<div class="backdrop" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet"></div>
 
 <script>
 const BARBERS = [
-  {
-    name:"Дониёр",
-    cut:120000,
-    address:"Темур Малик 27",
-    photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true"
-  },
-  {
-    name:"Бахтиёр",
-    cut:100000,
-    address:"Феруза 2, 7-дом",
-    photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true"
-  },
-  {
-    name:"Махмуд",
-    cut:90000,
-    address:"Абай",
-    photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/maxa.jpg?raw=true"
-  },
-  {
-    name:"Ислом",
-    cut:85000,
-    address:"Тузель",
-    photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/isa.jpg?raw=true"
-  }
+ {name:"Дониёр",cut:120000,address:"Темур Малик 27",
+  photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true"},
+ {name:"Бахтиёр",cut:100000,address:"Феруза 2, 7-дом",
+  photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true"},
+ {name:"Махмуд",cut:90000,address:"Абай",
+  photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/maxa.jpg?raw=true"},
+ {name:"Ислом",cut:85000,address:"Тузель",
+  photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/isa.jpg?raw=true"}
 ];
 
-let booking={};
+let search="", booking={};
 
-function showList(){
-  let html=`<h1>💈 Барберы</h1>
-  <input placeholder="🔍 Поиск">`;
-
-  BARBERS.forEach(b=>{
+function render(){
+  let html="";
+  BARBERS.filter(b=>
+    (b.name+b.address).toLowerCase().includes(search.toLowerCase())
+  ).forEach(b=>{
     html+=`
-    <div class="barber" onclick="openProfile('${b.name}')">
+    <div class="card" onclick="openProfile('${b.name}')">
       <img class="avatar" src="${b.photo}">
       <div>
         <div class="name">${b.name}</div>
@@ -165,16 +184,15 @@ function showList(){
       </div>
     </div>`;
   });
-
-  app.innerHTML=html;
+  list.innerHTML=html;
 }
 
 function openProfile(name){
   booking.barber = BARBERS.find(b=>b.name===name);
   openSheet(`
     <h2>${booking.barber.name}</h2>
+    <div class="step">Профиль барбера</div>
     <p class="small">📍 ${booking.barber.address}</p>
-
     <button class="primary" onclick="chooseService()">Записаться</button>
     <button class="secondary" onclick="closeSheet()">Закрыть</button>
   `);
@@ -183,22 +201,46 @@ function openProfile(name){
 function chooseService(){
   openSheet(`
     <h2>Услуга</h2>
-    <button class="primary" onclick="confirm()">Стрижка</button>
-    <button class="secondary" onclick="confirm()">Борода</button>
-    <button class="secondary" onclick="closeSheet()">Назад</button>
+    <div class="step">Шаг 1 из 3</div>
+    <button class="primary" onclick="chooseDate()">Стрижка</button>
+    <button class="secondary" onclick="chooseDate()">Борода</button>
+    <button class="secondary" onclick="openProfile(booking.barber.name)">Назад</button>
   `);
 }
 
-function confirm(){
+function chooseDate(){
+  openSheet(`
+    <h2>Дата</h2>
+    <div class="step">Шаг 2 из 3</div>
+    <button class="primary" onclick="chooseTime()">Сегодня</button>
+    <button class="secondary" onclick="chooseTime()">Завтра</button>
+    <button class="secondary" onclick="chooseService()">Назад</button>
+  `);
+}
+
+function chooseTime(){
+  let times=["10:00","11:00","12:00","14:00","15:00"];
+  let html=`<h2>Время</h2><div class="step">Шаг 3 из 3</div>`;
+  times.forEach(t=>{
+    html+=`<div class="slot" onclick="confirm('${t}')">⏰ ${t}</div>`;
+  });
+  html+=`<button class="secondary" onclick="chooseDate()">Назад</button>`;
+  openSheet(html);
+}
+
+function confirm(t){
   openSheet(`
     <h2>Готово</h2>
-    <p class="small">Заявка отправлена барберу.<br>Он подтвердит запись.</p>
+    <p class="small">
+      Заявка отправлена барберу.<br>
+      Ожидает подтверждения.
+    </p>
     <button class="primary" onclick="closeSheet()">Ок</button>
   `);
 }
 
-function openSheet(content){
-  sheet.innerHTML=content;
+function openSheet(html){
+  sheet.innerHTML=html;
   sheet.classList.add("active");
   document.querySelector(".backdrop").classList.add("active");
 }
@@ -208,10 +250,12 @@ function closeSheet(){
   document.querySelector(".backdrop").classList.remove("active");
 }
 
-showList();
+render();
 </script>
 
 </body>
+</html>
+
 </html>
 
 
