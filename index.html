@@ -13,7 +13,7 @@ body {
   color:white;
 }
 #app { padding:20px; }
-h1 { text-align:center;margin-bottom:12px; }
+h1 { text-align:center;margin-bottom:14px; }
 
 input, select {
   width:100%;
@@ -53,17 +53,26 @@ button {
   border:none;
   font-size:16px;
 }
+
 .primary { background:#22c55e;color:black; }
-.secondary { background:#1e293b;color:white;border:1px solid #334155; }
+.secondary {
+  background:#1e293b;
+  color:white;
+  border:1px solid #334155;
+}
 
 .slot {
-  padding:12px;
-  border-radius:10px;
+  padding:14px;
+  border-radius:12px;
   margin-bottom:8px;
   background:#1e293b;
   cursor:pointer;
 }
-.busy { opacity:.4; cursor:not-allowed; }
+
+.busy {
+  opacity:.4;
+  cursor:not-allowed;
+}
 </style>
 </head>
 
@@ -115,7 +124,7 @@ const BARBERS = [
   }
 ];
 
-// демо занятости
+// demo busy slots
 const BUSY = {
   "Дониёр":["11:00","15:00"],
   "Бахтиёр":["12:00"]
@@ -139,21 +148,23 @@ function showAll(){
     </select>
   `;
 
-  BARBERS.filter(b =>
-    (b.name + b.address).toLowerCase().includes(search.toLowerCase())
-    && b.cut <= maxPrice
-  ).forEach(b=>{
-    html += `
-      <div class="barber-card" onclick="openProfile('${b.name}')">
-        <img class="avatar" src="${b.photo}">
-        <div class="info">
-          <div class="name">${b.name}</div>
-          <div class="small">✂️ от ${b.cut} сум</div>
-          <div class="small">📍 ${b.address}</div>
+  BARBERS
+    .filter(b =>
+      (b.name+b.address).toLowerCase().includes(search.toLowerCase())
+      && b.cut <= maxPrice
+    )
+    .forEach(b=>{
+      html+=`
+        <div class="barber-card" onclick="openProfile('${b.name}')">
+          <img class="avatar" src="${b.photo}">
+          <div class="info">
+            <div class="name">${b.name}</div>
+            <div class="small">✂️ от ${b.cut.toLocaleString()} сум</div>
+            <div class="small">📍 ${b.address}</div>
+          </div>
         </div>
-      </div>
-    `;
-  });
+      `;
+    });
 
   app.innerHTML = html;
 }
@@ -164,9 +175,12 @@ function openProfile(name){
 
   app.innerHTML = `
     <h1>${booking.barber.name}</h1>
+
     <img src="${booking.barber.photo}"
-      style="width:100%;border-radius:16px;margin-bottom:10px">
-    <p>📍 ${booking.barber.address}</p>
+      style="width:100%;border-radius:18px;margin-bottom:12px">
+
+    <p class="small">📍 ${booking.barber.address}</p>
+    <p class="small">✂️ от ${booking.barber.cut.toLocaleString()} сум</p>
 
     <button class="primary" onclick="chooseService()">Записаться</button>
     <button class="secondary" onclick="showAll()">Назад</button>
@@ -177,9 +191,21 @@ function openProfile(name){
 function chooseService(){
   app.innerHTML = `
     <h1>Услуга</h1>
-    <button class="secondary" onclick="booking.service='Стрижка';chooseDate()">Стрижка</button>
-    <button class="secondary" onclick="booking.service='Борода';chooseDate()">Борода</button>
-    <button class="secondary" onclick="openProfile(booking.barber.name)">Назад</button>
+
+    <button class="secondary"
+      onclick="booking.service='Стрижка';chooseDate()">
+      ✂️ Стрижка
+    </button>
+
+    <button class="secondary"
+      onclick="booking.service='Борода';chooseDate()">
+      🧔 Борода
+    </button>
+
+    <button class="secondary"
+      onclick="openProfile(booking.barber.name)">
+      Назад
+    </button>
   `;
 }
 
@@ -190,8 +216,17 @@ function chooseDate(){
 
   app.innerHTML = `
     <h1>Дата</h1>
-    <button class="secondary" onclick="booking.date='${today}';chooseTime()">Сегодня</button>
-    <button class="secondary" onclick="booking.date='${tomorrow}';chooseTime()">Завтра</button>
+
+    <button class="secondary"
+      onclick="booking.date='${today}';chooseTime()">
+      Сегодня
+    </button>
+
+    <button class="secondary"
+      onclick="booking.date='${tomorrow}';chooseTime()">
+      Завтра
+    </button>
+
     <button class="secondary" onclick="chooseService()">Назад</button>
   `;
 }
@@ -208,7 +243,7 @@ function chooseTime(){
     html += `
       <div class="slot ${isBusy?'busy':''}"
         onclick="${isBusy?'':`confirmBooking('${t}')`}">
-        ⏰ ${t} ${isBusy?'(занято)':''}
+        ⏰ ${t} ${isBusy?'— занято':''}
       </div>
     `;
   });
@@ -229,6 +264,7 @@ function confirmBooking(time){
 
   app.innerHTML = `
     <h1>Подтверждение</h1>
+
     <p>${msg.replaceAll("\n","<br>")}</p>
 
     <button class="primary"
