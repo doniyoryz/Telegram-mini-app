@@ -1,102 +1,91 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sartarosh</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sartarosh</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #0f172a;
-      color: white;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0f172a;
+  color: white;
+}
 
-    #app {
-      padding: 20px;
-    }
+#app { padding: 20px; }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 16px;
-    }
+h1 {
+  text-align: center;
+  margin-bottom: 16px;
+}
 
-    .input, .select {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 12px;
-      border: none;
-      font-size: 15px;
-      outline: none;
-    }
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 15px;
+  outline: none;
+}
 
-    button.secondary {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 12px;
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: white;
-      border-radius: 12px;
-      font-size: 16px;
-      text-align: left;
-    }
+.filters {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
 
-    .barber-card {
-      display: flex;
-      gap: 12px;
-      background: #1e293b;
-      border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 14px;
-      align-items: center;
-    }
+.filter {
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.8;
+}
 
-    .barber-card:active {
-      background: #334155;
-    }
+.filter.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  opacity: 1;
+}
 
-    .avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 12px;
-      object-fit: cover;
-    }
+.barber-card {
+  display: flex;
+  gap: 12px;
+  background: #1e293b;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 14px;
+  align-items: center;
+}
 
-    .info {
-      flex: 1;
-    }
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  object-fit: cover;
+}
 
-    .name {
-      font-weight: 600;
-      font-size: 16px;
-    }
+.info { flex: 1; }
 
-    .rating {
-      font-size: 13px;
-      opacity: 0.8;
-    }
+.name { font-weight: 600; }
 
-    .price {
-      font-size: 14px;
-      margin-top: 4px;
-    }
+.rating { font-size: 13px; opacity: 0.8; }
 
-    .location {
-      font-size: 12px;
-      opacity: 0.7;
-      cursor: pointer;
-      text-decoration: underline;
-    }
+.price { font-size: 14px; margin-top: 4px; }
 
-    .cta {
-      font-size: 13px;
-      opacity: 0.9;
-      white-space: nowrap;
-    }
-  </style>
+.location {
+  font-size: 12px;
+  opacity: 0.7;
+  cursor: pointer;
+  text-decoration: underline;
+}
+</style>
 </head>
 
 <body>
@@ -109,108 +98,102 @@ const BARBERS = [
     name: "Дониёр",
     exp: "5 лет опыта",
     cut: 120000,
-    beard: 80000,
     tg: "d_zafarogli",
     photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true",
+    lat: 41.348373,
+    lng: 69.356767,
     address: "Темур Малик 27",
-    lat: 41.311081,
-    lng: 69.240562
+    top: true,
+    today: true
   },
   {
     name: "Бахтиёр",
     exp: "fade, борода",
     cut: 100000,
-    beard: 70000,
     tg: "ryoithab",
     photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true",
+    lat: 41.350620,
+    lng: 69.360765,
     address: "Феруза 2, 7-дом",
-    lat: 41.344912,
-    lng: 69.287623
+    top: false,
+    today: true
   },
   {
     name: "Махмуд",
     exp: "классика",
     cut: 90000,
-    beard: 60000,
     tg: "CJskadi",
     photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/maxa.jpg?raw=true",
+    lat: 41.325278,
+    lng: 69.257854,
     address: "Абай",
-    lat: 41.328540,
-    lng: 69.281280
+    top: false,
+    today: false
   },
   {
     name: "Ислом",
     exp: "универсал",
     cut: 85000,
-    beard: 55000,
     tg: "isa_abd09",
     photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/isa.jpg?raw=true",
+    lat: 41.307816,
+    lng: 69.426187,
     address: "Тузель",
-    lat: 41.364210,
-    lng: 69.341870
+    top: false,
+    today: false
   }
 ];
 
-let booking = {};
-let search = "";
-let serviceFilter = "all";
-let sortPrice = "none";
+let searchQuery = "";
+let filterTop = false;
+let filterCheap = false;
+let filterToday = false;
 
-/* ========= MAP ========= */
+/* ========= КАРТА ========= */
 function openYandexMap(lat, lng) {
-  window.open(`https://yandex.uz/maps/?ll=${lng},${lat}&z=17`, "_blank");
+  window.open(`https://yandex.uz/maps/?pt=${lng},${lat}&z=16`, "_blank");
 }
 
-/* ========= UI ========= */
+/* ========= СПИСОК ========= */
 function showAllBarbers() {
   let html = `
     <h1>💈 Выберите барбера</h1>
 
-    <input class="input" placeholder="🔍 Поиск по имени или адресу"
-      oninput="search=this.value; showAllBarbers()"/>
+    <input
+      placeholder="🔍 Поиск по имени или адресу"
+      value="${searchQuery}"
+      oninput="searchQuery=this.value; showAllBarbers()"
+    />
 
-    <select class="select" onchange="serviceFilter=this.value; showAllBarbers()">
-      <option value="all">Все услуги</option>
-      <option value="cut">Стрижка</option>
-      <option value="beard">Борода</option>
-    </select>
-
-    <select class="select" onchange="sortPrice=this.value; showAllBarbers()">
-      <option value="none">Без сортировки</option>
-      <option value="asc">Цена ↑</option>
-      <option value="desc">Цена ↓</option>
-    </select>
+    <div class="filters">
+      <div class="filter ${filterTop?'active':''}" onclick="filterTop=!filterTop; showAllBarbers()">⭐ Топ</div>
+      <div class="filter ${filterCheap?'active':''}" onclick="filterCheap=!filterCheap; showAllBarbers()">💸 Дешевле</div>
+      <div class="filter ${filterToday?'active':''}" onclick="filterToday=!filterToday; showAllBarbers()">🕒 Сегодня</div>
+    </div>
   `;
 
   let list = BARBERS.filter(b =>
-    b.name.toLowerCase().includes(search.toLowerCase()) ||
-    b.address.toLowerCase().includes(search.toLowerCase())
+    b.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    b.address.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (serviceFilter === "cut") list = list.filter(b => b.cut);
-  if (serviceFilter === "beard") list = list.filter(b => b.beard);
-
-  if (sortPrice === "asc") list.sort((a,b)=>a.cut-b.cut);
-  if (sortPrice === "desc") list.sort((a,b)=>b.cut-a.cut);
-
-  if (!list.length) {
-    html += `<p style="text-align:center;opacity:.6">Ничего не найдено</p>`;
-  }
+  if (filterTop) list = list.filter(b => b.top);
+  if (filterToday) list = list.filter(b => b.today);
+  if (filterCheap) list.sort((a,b)=>a.cut-b.cut);
 
   list.forEach(b => {
     html += `
-      <div class="barber-card" onclick="selectBarber('${b.name}','${b.tg}')">
+      <div class="barber-card">
         <img class="avatar" src="${b.photo}">
         <div class="info">
           <div class="name">${b.name}</div>
-          <div class="rating">⭐ ${b.exp}</div>
+          <div class="rating">⭐ 4.8 • ${b.exp}</div>
           <div class="price">✂️ от ${b.cut.toLocaleString()} сум</div>
           <div class="location"
-            onclick="event.stopPropagation(); openYandexMap(${b.lat},${b.lng})">
+            onclick="openYandexMap(${b.lat},${b.lng})">
             📍 ${b.address}
           </div>
         </div>
-        <div class="cta">Выбрать</div>
       </div>
     `;
   });
@@ -218,18 +201,10 @@ function showAllBarbers() {
   document.getElementById("app").innerHTML = html;
 }
 
-/* ========= FLOW ========= */
-function selectBarber(name,tg){
-  booking={name,tg};
-  document.getElementById("app").innerHTML=`
-    <h1>✂️ Услуга</h1>
-    <button class="secondary" onclick="alert('Готово!')">Стрижка</button>
-    <button class="secondary" onclick="showAllBarbers()">⬅️ Назад</button>
-  `;
-}
-
+/* ========= START ========= */
 showAllBarbers();
 </script>
 </body>
 </html>
+
 
