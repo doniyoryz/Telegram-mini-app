@@ -197,9 +197,10 @@
               <div class="rating">⭐ 4.8 • ${b.exp}</div>
               <div class="price">✂️ от ${b.cut.toLocaleString()} сум</div>
               <div class="location"
-                onclick="event.stopPropagation(); openYandexMap('${b.address}')">
-                📍 ${b.address}
-              </div>
+  onclick="event.stopPropagation(); openYandexMap(${b.lat}, ${b.lng})">
+  📍 ${b.address}
+</div>
+
             </div>
             <div class="cta">Выбрать</div>
           </div>
