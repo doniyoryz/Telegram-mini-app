@@ -95,79 +95,70 @@
     console.log("Telegram WebApp:", window.Telegram?.WebApp);
 
     /* ========= ДАННЫЕ ========= */
-    const BARBERS = {
-      {
-  name: "Дониёр",
-  exp: "5 лет опыта",
-  cut: 120000,
-  beard: 80000,
-  tg: "d_zafarogli",
-  photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true",
-  address: "Темур Малик 27"
-}
-,
-        {
-  name: "Бахтиёр",
-  exp: "fade, борода",
-  cut: 100000,
-  beard: 70000,
-  tg: "ryoithab",
-  photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true"
-  address: "Феруза 2, 7-дом"
-}
+    const BARBERS = [
+  {
+    name: "Дониёр",
+    exp: "5 лет опыта",
+    cut: 120000,
+    beard: 80000,
+    tg: "d_zafarogli",
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true",
+    address: "Темур Малик 27"
+  },
+  {
+    name: "Бахтиёр",
+    exp: "fade, борода",
+    cut: 100000,
+    beard: 70000,
+    tg: "ryoithab",
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true",
+    address: "Феруза 2, 7-дом"
+  },
+  {
+    name: "Махмуд",
+    exp: "классика",
+    cut: 90000,
+    beard: 60000,
+    tg: "CJskadi",
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/maxa.jpg?raw=true",
+    address: "Абай"
+  },
+  {
+    name: "Ислом",
+    exp: "универсал",
+    cut: 85000,
+    beard: 55000,
+    tg: "isa_abd09",
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/isa.jpg?raw=true",
+    address: "Тузель"
+  }
+];
 
-      ],
-        {
-  name: "Махмуд",
-  exp: "fade, борода",
-  cut: 100000,
-  beard: 70000,
-  tg: "CJskadi",
-  photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/maxa.jpg?raw=true"
-  address: "Абай"
-}
-
-      ],
-        {
-  name: "Ислом",
-  exp: "fade, борода",
-  cut: 100000,
-  beard: 70000,
-  tg: "isa_abd09",
-  photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/isa.jpg?raw=true"
-  address: "Тузель"
-}
-
-      ]
-    };
-    let booking = {};
+let booking = {};
 
 function showAllBarbers() {
   let html = `<h1>💈 Выберите барбера</h1>`;
 
-  Object.entries(BARBERS).forEach(([branch, barbers]) => {
-    barbers.forEach(b => {
-      html += `
-  <div class="barber-card" onclick="selectBarber('${b.name}', '${b.tg}', '${branch}')">
-    
-   <img class="avatar" src="${b.photo}" />
+  BARBERS.forEach(b => {
+    html += `
+      <div class="barber-card" onclick="selectBarber('${b.name}', '${b.tg}', '${b.address}')">
+        <img class="avatar" src="${b.photo}" />
 
-    <div class="info">
-      <div class="name">${b.name}</div>
-      <div class="rating">⭐ 4.8 • ${b.exp}</div>
-      <div class="price">✂️ от ${b.cut.toLocaleString()} сум</div>
-      <div class="location">📍 ${b.address || branch}</div>
-    </div>
+        <div class="info">
+          <div class="name">${b.name}</div>
+          <div class="rating">⭐ 4.8 • ${b.exp}</div>
+          <div class="price">✂️ от ${b.cut.toLocaleString()} сум</div>
+          <div class="location">📍 ${b.address}</div>
+        </div>
 
-    <div class="cta">Выбрать</div>
-  </div>
-`;
-
-    });
+        <div class="cta">Выбрать</div>
+      </div>
+    `;
   });
 
   document.getElementById("app").innerHTML = html;
 }
+
   function selectBarber(name, tg, branch) {
   booking.barber = name;
   booking.tg = tg;
