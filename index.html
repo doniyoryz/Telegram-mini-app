@@ -48,17 +48,48 @@ button {
 <script>
 /* ====== DATA ====== */
 const BARBERS = [
-{
- name:"Дониёр", tg:"d_zafarogli", cut:120000,
- address:"Темур Малик 27", lat:41.348373, lng:69.356767,
- photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true"
-},
-{
- name:"Бахтиёр", tg:"ryoithab", cut:100000,
- address:"Феруза 2, 7-дом", lat:41.350620, lng:69.360765,
- photo:"https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true"
-}
+  {
+    name: "Дониёр",
+    exp: "5 лет опыта",
+    cut: 120000,
+    tg: "d_zafarogli",
+    address: "Темур Малик 27",
+    lat: 41.348373,
+    lng: 69.356767,
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/man.jpg?raw=true"
+  },
+  {
+    name: "Бахтиёр",
+    exp: "fade, борода",
+    cut: 100000,
+    tg: "ryoithab",
+    address: "Феруза 2, 7-дом",
+    lat: 41.350620,
+    lng: 69.360765,
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/baxa.jpg?raw=true"
+  },
+  {
+    name: "Махмуд",
+    exp: "классика",
+    cut: 90000,
+    tg: "CJskadi",
+    address: "Абай",
+    lat: 41.325278,
+    lng: 69.257854,
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/maxa.jpg?raw=true"
+  },
+  {
+    name: "Ислом",
+    exp: "универсал",
+    cut: 85000,
+    tg: "isa_abd09",
+    address: "Тузель",
+    lat: 41.307816,
+    lng: 69.426187,
+    photo: "https://github.com/doniyoryz/Telegram-mini-app/blob/main/isa.jpg?raw=true"
+  }
 ];
+
 
 // мок занятых слотов
 const BUSY = {
